@@ -28,8 +28,6 @@ services: # サービス
     container_name: "php-fpm_usm" # (任意の文字列) コンテナの名称
     volumes: # (任意の文字列) ボリュームの名称とマウント先 -> src:/var/www
       - ./src:/var/www
-    expose:
-      - 9000
 
   nginx: # (任意の文字列) サービスの名称：nginx
     image: nginx:latest # 用いるdockerイメージの指定

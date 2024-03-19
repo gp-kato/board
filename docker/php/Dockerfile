@@ -33,10 +33,6 @@ ENV COMPOSER_HOME /composer
 # composerのルートPath設定：/composer/vendor/binを指定
 ENV PATH $PATH:/composer/vendor/bin
 # 作業ディレクトリの設定-> WORKDIR [Paht]
-WORKDIR /var/www/public
+WORKDIR /var/www
 # Laravelパッケージのインストールを実行する
 RUN composer global require "laravel/installer"
-# Nginxの設定ファイルをコンテナにコピー（ローカルのnginx.confを使用）
-COPY nginx.conf /etc/nginx/nginx.conf
-# Nginxを起動するコマンドを指定
-CMD ["nginx", "-g", "daemon off;"]
