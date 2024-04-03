@@ -15,3 +15,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/',[BbsController::class,'index']);
+Route::post('/',[BbsController::class,'store']);
+Route::post('/bbs_add',[BbsController::class,'add']);
+
+Route::get('/admin',[BbsController::class,'admin']);
+Route::post('/admin',[BbsController::class,'admin']);
+
+Route::get('/delete',[BbsController::class,'delete']);
+
+Route::get('/download',[BbsController::class,'download']);
+
+Route::get('/edit',[BbsController::class,'edit']);

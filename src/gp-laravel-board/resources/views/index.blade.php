@@ -400,6 +400,7 @@ article.reply::before {
     </ul>
 <?php endif; ?>
 <form method="post">
+@csrf
 	<div>
 		<label for="view_name">表示名</label>
 		<input id="view_name" type="text" name="view_name" value="<?php if( !empty($_SESSION['view_name']) ){ echo htmlspecialchars( $_SESSION['view_name'], ENT_QUOTES, 'UTF-8'); } ?>">
