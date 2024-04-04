@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->increments('id'); // 主キーであり、AUTO_INCREMENT属性を持つint型の'id'カラム
-            $table->varchar('view_name', 100); // varchar型の'view_name'カラム
+            $table->string('view_name', 100); // varchar型の'view_name'カラム
             $table->text('message'); // text型の'message'カラム
             $table->datetime('post_date'); // datetime型の'post_date'カラム
         });
