@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('view_name', 100); // varchar型の'view_name'カラム
             $table->text('message'); // text型の'message'カラム
             $table->datetime('post_date'); // datetime型の'post_date'カラム
+            $table->timestamps(); // timestamp型の'create_at'カラムと'update_at'カラムの省略記法
         });
     }
 
