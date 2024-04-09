@@ -15,33 +15,20 @@ class BbsController extends Controller
     public function store(Request $request)
     {
         // リクエストからデータを取得
-        $name = $request->name;
+        $view_name = $request->view_name;
         $message = $request->message;
     
         // データを配列に格納
         $data = [
-            'view_name' => $name,
-            'message' => $message
+            'view_name' => $view_name,
+            'message' => $message,
+            'post_date' => now()  // 現在の日付と時間を設定
         ];
     
         // データベースに挿入
         Message::insert($data);
     
         // リダイレクト
-        return redirect('/');
-    }
-
-    public function add (Request $request)
-    {
-        $name = $request->name;
-        $message = $request->message;
-
-        $data = [
-            'view_name' => $name,
-            'message' => $message
-        ];
-        Message::insert($data);
-
         return redirect('/');
     }
 

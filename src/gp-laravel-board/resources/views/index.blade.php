@@ -28,6 +28,7 @@ try {
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::MYSQL_ATTR_MULTI_STATEMENTS => false
     );
+    $pdo = new pdo('mysql:charset=utf8;dbname='.DB_NAME.';host='.DB_HOST , DB_USER,);
 
 } catch(PDOException $e) {
 
