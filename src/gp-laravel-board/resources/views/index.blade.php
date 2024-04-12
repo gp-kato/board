@@ -28,7 +28,6 @@ try {
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::MYSQL_ATTR_MULTI_STATEMENTS => false
     );
-    $pdo = new pdo('mysql:charset=utf8;dbname='.DB_NAME.';host='.DB_HOST , DB_USER,);
 
 } catch(PDOException $e) {
 
@@ -389,42 +388,48 @@ article.reply::before {
 </style>
 </head>
 <body>
-<h1>ひと言掲示板</h1>
-<?php if( !empty($success_message) ): ?>
-    <p class="success_message"><?php echo $success_message; ?></p> 
-<?php endif; ?>
-<?php if( !empty($error_message) ): ?>
-    <ul class="error_message">
-		<?php foreach( $error_message as $value ): ?>
-            <li>・<?php echo $value; ?></li>
-		<?php endforeach; ?>
-    </ul>
-<?php endif; ?>
-<form method="post">
-@csrf
-	<div>
-		<label for="view_name">表示名</label>
-		<input id="view_name" type="text" name="view_name" value="<?php if( !empty($_SESSION['view_name']) ){ echo htmlspecialchars( $_SESSION['view_name'], ENT_QUOTES, 'UTF-8'); } ?>">
-	</div>
-	<div>
-		<label for="message">ひと言メッセージ</label>
-		<textarea id="message" name="message"></textarea>
-	</div>
-	<input type="submit" name="btn_submit" value="書き込む">
-</form>
-<hr>
-<section>
-<?php if( !empty($message_array) ){ ?>
-<?php foreach( $message_array as $value ){ ?>
-<article>
-    <div class="info">
-        <h2><?php echo htmlspecialchars( $value['view_name'], ENT_QUOTES, 'UTF-8'); ?></h2>
-        <time><?php echo date('Y年m月d日 H:i', strtotime($value['post_date'])); ?></time>
+    <h1>ひと言掲示板</h1>
+    @if (!empty($success_message))
+        <p class="success_message">{{ $success_message }}</p> 
+    @endif
+    @if (!empty($error_message))
+        <ul class="error_message">
+            @foreach ($error_message as $value)
+                <li>・{{ $value }}</li>
+            @endforeach
+        </ul>
+    @endif
+    <form method="post" action="bbs_add">
+    @csrf
+	    <div>
+		    <label for="view_name">表示名</label>
+		    <input id="view_name" type="text" name="view_name" value="<?php if( !empty($_SESSION['view_name']) ){ echo htmlspecialchars( $_SESSION['view_name'], ENT_QUOTES, 'UTF-8'); } ?>">
+	    </div>
+	    <div>
+		    <label for="message">ひと言メッセージ</label>
+		    <textarea id="message" name="message"></textarea>
+	    </div>
+	    <input type="submit" name="btn_submit" value="書き込む">
+    </form>
+    <hr>
+    <div class="bodywrapper">
+        <div class="messageRow">
+            <div class="message">
+                <section>
+                    <?php if( !empty($message_array) ){ ?>
+                        @foreach ($bbs_data as $data)
+                            <article>
+                                <div class="info">
+                                    <h2>{{ $data->view_name }}</h2>
+                                    <time>{{ $data->post_date }}</time>
+                                </div>
+                                <p>{{ $data->message }}</p>
+                            </article>
+                        @endforeach
+                    <?php } ?>
+                </section>
+            </div>
+        </div>
     </div>
-    <p><?php echo nl2br( htmlspecialchars( $value['message'], ENT_QUOTES, 'UTF-8') ); ?></p>
-</article>
-<?php } ?>
-<?php } ?>
-</section>
 </body>
 </html>
