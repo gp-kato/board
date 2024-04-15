@@ -39,7 +39,10 @@ class BbsController extends Controller
 
     public function admin ()
     {
-        return view ('admin');
+        $bbs_data = message::where('message', 0)
+        ->orderBy('id', 'desc')
+        ->get();
+        return view ('admin', compact('bbs_data'));
     }
 
     public function delete ()
@@ -47,7 +50,7 @@ class BbsController extends Controller
         return view ('delete');
     }
 
-    public function download ()
+    public function download (Request $request)
     {
         return view ('download');
     }

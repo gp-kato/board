@@ -23,5 +23,6 @@ Route::post('/admin',[BbsController::class,'admin']);
 Route::get('/delete',[BbsController::class,'delete']);
 
 Route::get('/download',[BbsController::class,'download']);
+Route::post('/download',[BbsController::class,'download']);
 
 Route::get('/edit',[BbsController::class,'edit']);

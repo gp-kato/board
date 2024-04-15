@@ -370,7 +370,8 @@ article.reply::before {
 
 <?php if( !empty($_SESSION['admin_login']) && $_SESSION['admin_login'] === true ): ?>
 
-<form method="get" action="./download.php">
+<form method="get" action="download">
+    @csrf
     <select name="limit">
         <option value="">全て</option>
         <option value="10">10件</option>
@@ -379,18 +380,24 @@ article.reply::before {
     <input type="submit" name="btn_download" value="ダウンロード">
 </form>
 
-<?php if( !empty($message_array) ){ ?>
-<?php foreach( $message_array as $value ){ ?>
-<article>
-    <div class="info">
-        <h2><?php echo htmlspecialchars( $value['view_name'], ENT_QUOTES, 'UTF-8'); ?></h2>
-        <time><?php echo date('Y年m月d日 H:i', strtotime($value['post_date'])); ?></time>
-				<p><a href="edit.php?message_id=<?php echo $value['id']; ?>">編集</a>  <a href="delete.php?message_id=<?php echo $value['id']; ?>">削除</a></p>
+    <hr>
+    <div class="bodywrapper">
+        @foreach ($bbs_data as $data)
+            <div class="messageRow">
+                <div class="message">
+                    <section>
+                        <article>
+                            <div class="info">
+                                <h2>{{ $data->view_name }}</h2>
+                                <time>{{ $data->post_date }}</time>
+                            </div>
+                            <p>{{ $data->message }}</p>
+                        </article>
+                    </section>
+                </div>
+            </div>
+        @endforeach
     </div>
-    <p><?php echo nl2br( htmlspecialchars( $value['message'], ENT_QUOTES, 'UTF-8') ); ?></p>
-</article>
-<?php } ?>
-<?php } ?>
 
 <form method="get" action="">
     <input type="submit" name="btn_logout" value="ログアウト">

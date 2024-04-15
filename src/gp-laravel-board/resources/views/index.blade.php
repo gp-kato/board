@@ -413,23 +413,21 @@ article.reply::before {
     </form>
     <hr>
     <div class="bodywrapper">
-        <div class="messageRow">
-            <div class="message">
-                <section>
-                    <?php if( !empty($message_array) ){ ?>
-                        @foreach ($bbs_data as $data)
-                            <article>
-                                <div class="info">
-                                    <h2>{{ $data->view_name }}</h2>
-                                    <time>{{ $data->post_date }}</time>
-                                </div>
-                                <p>{{ $data->message }}</p>
-                            </article>
-                        @endforeach
-                    <?php } ?>
-                </section>
+        @foreach ($bbs_data as $data)
+            <div class="messageRow">
+                <div class="message">
+                    <section>
+                        <article>
+                            <div class="info">
+                                <h2>{{ $data->view_name }}</h2>
+                                <time>{{ $data->post_date }}</time>
+                            </div>
+                            <p>{{ $data->message }}</p>
+                        </article>
+                    </section>
+                </div>
             </div>
-        </div>
+        @endforeach
     </div>
 </body>
 </html>

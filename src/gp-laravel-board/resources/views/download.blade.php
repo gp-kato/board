@@ -9,9 +9,7 @@ define( 'DB_NAME', 'board');
 // 変数の初期化
 $csv_data = null;
 $sql = null;
-$pdo = null;
 $option = null;
-$message_array = array();
 $limit = null;
 $stmt = null;
 
@@ -32,12 +30,6 @@ if( !empty($_SESSION['admin_login']) && $_SESSION['admin_login'] === true ) {
 	// データベースに接続
 	try {
 
-		$option = array(
-			PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-			PDO::MYSQL_ATTR_MULTI_STATEMENTS => false
-		);
-		$pdo = new PDO('mysql:charset=UTF8;dbname='.DB_NAME.';host='.DB_HOST , DB_USER, DB_PASS, $option);
-
 		// メッセージのデータを取得する
 		if( !empty($limit) ) {
 
@@ -46,23 +38,15 @@ if( !empty($_SESSION['admin_login']) && $_SESSION['admin_login'] === true ) {
 
 			// 値をセット
 			$stmt->bindValue( ':limit', $_GET['limit'], PDO::PARAM_INT);
-
-		} else {
-			$stmt = $pdo->prepare("SELECT * FROM message ORDER BY post_date ASC");
 		}
-
-		// SQLクエリの実行
-		$stmt->execute();
-		$message_array = $stmt->fetchAll();
 
 		// データベースの接続を閉じる
 		$stmt = null;
-		$pdo = null;
 
 	} catch(PDOException $e) {
 
 		// 管理者ページへリダイレクト
-		header("Location: ./admin.php");
+		header("Location: admin");
 		exit;
 	}
 
