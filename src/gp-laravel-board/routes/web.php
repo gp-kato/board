@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BbsController;
+use App\Http\Controllers\CsvDownloadController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,8 +22,11 @@ Route::get('/admin',[BbsController::class,'admin']);
 Route::post('/admin',[BbsController::class,'admin']);
 
 Route::get('/delete',[BbsController::class,'delete']);
+Route::post('/delete',[BbsController::class,'delete']);
 
 Route::get('/download',[BbsController::class,'download']);
-Route::post('/download',[BbsController::class,'download']);
 
 Route::get('/edit',[BbsController::class,'edit']);
+Route::post('/edit',[BbsController::class,'edit']);
+
+Route::get('/csv-download', [CsvDownloadController::class, 'downloadCsv']);

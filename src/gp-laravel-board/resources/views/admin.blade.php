@@ -359,18 +359,18 @@ article.reply::before {
 </head>
 <body>
 <h1>ひと言掲示板 管理ページ</h1>
-<?php if( !empty($error_message) ): ?>
+@if ( !empty($error_message) )
     <ul class="error_message">
-		<?php foreach( $error_message as $value ): ?>
+		@foreach ( $error_message as $value )
             <li>・<?php echo $value; ?></li>
-		<?php endforeach; ?>
+		@endforeach
     </ul>
-<?php endif; ?>
+@endif
 <section>
 
-<?php if( !empty($_SESSION['admin_login']) && $_SESSION['admin_login'] === true ): ?>
+@if ( !empty($_SESSION['admin_login']) && $_SESSION['admin_login'] === true )
 
-<form method="get" action="download">
+<form method="get" action="csv-download">
     @csrf
     <select name="limit">
         <option value="">全て</option>
@@ -390,6 +390,7 @@ article.reply::before {
                             <div class="info">
                                 <h2>{{ $data->view_name }}</h2>
                                 <time>{{ $data->post_date }}</time>
+                                <p><a href="edit?message_id={{ $data->id }}編集</a>  <a href="delete?message_id={{ $data->id }}削除</a></p>
                             </div>
                             <p>{{ $data->message }}</p>
                         </article>
@@ -413,7 +414,7 @@ article.reply::before {
     </div>
     <input type="submit" name="btn_submit" value="ログイン">
 </form>
-<?php endif; ?>
+@endif
 </section>
 </body>
 </html>

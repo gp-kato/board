@@ -14,7 +14,6 @@ $view_name = null;
 $message = array();
 $message_data = null;
 $error_message = array();
-$pdo = null;
 $stmt = null;
 $res = null;
 $option = null;
@@ -25,7 +24,7 @@ session_start();
 if( empty($_SESSION['admin_login']) || $_SESSION['admin_login'] !== true ) {
 
 	// ログインページへリダイレクト
-	header("Location: ./admin.php");
+	header("Location: admin");
 	exit;
 }
 
@@ -59,7 +58,7 @@ if( !empty($_GET['message_id']) && empty($_POST['message_id']) ) {
 
 	// 投稿データが取得できないときは管理ページに戻る
 	if( empty($message_data) ) {
-		header("Location: ./admin.php");
+		header("Location: admin");
 		exit;
 	}
 
@@ -87,9 +86,6 @@ if( !empty($_GET['message_id']) && empty($_POST['message_id']) ) {
 
 	if( empty($error_message) ) {
 
-		// トランザクション開始
-		$pdo->beginTransaction();
-
 		try {
 
 			// SQL作成
@@ -114,7 +110,7 @@ if( !empty($_GET['message_id']) && empty($_POST['message_id']) ) {
 
 		// 更新に成功したら一覧に戻る
 		if( $res ) {
-			header("Location: ./admin.php");
+			header("Location: admin");
 			exit;
 		}
 	}
@@ -122,7 +118,6 @@ if( !empty($_GET['message_id']) && empty($_POST['message_id']) ) {
 
 // データベースの接続を閉じる
 $stmt = null;
-$pdo = null;
 
 ?>
 <!DOCTYPE html>
@@ -424,13 +419,13 @@ article.reply::before {
 </head>
 <body>
 <h1>ひと言掲示板 管理ページ（投稿の編集）</h1>
-<?php if( !empty($error_message) ): ?>
+@if ( !empty($error_message) )
     <ul class="error_message">
-		<?php foreach( $error_message as $value ): ?>
+		@foreach ( $error_message as $value )
             <li>・<?php echo $value; ?></li>
-		<?php endforeach; ?>
+		@endforeach
     </ul>
-<?php endif; ?>
+@endif
 <form method="post">
 	<div>
 		<label for="view_name">表示名</label>
@@ -440,7 +435,7 @@ article.reply::before {
 		<label for="message">ひと言メッセージ</label>
 		<textarea id="message" name="message"><?php if( !empty($message_data['message']) ){ echo $message_data['message']; } elseif( !empty($message) ){ echo htmlspecialchars( $message, ENT_QUOTES, 'UTF-8'); } ?></textarea>
 	</div>
-	<a class="btn_cancel" href="admin.php">キャンセル</a>
+	<a class="btn_cancel" href="admin">キャンセル</a>
 	<input type="submit" name="btn_submit" value="更新">
 	<input type="hidden" name="message_id" value="<?php if( !empty($message_data['id']) ){ echo $message_data['id']; } elseif( !empty($_POST['message_id']) ){ echo htmlspecialchars( $_POST['message_id'], ENT_QUOTES, 'UTF-8'); } ?>">
 </form>

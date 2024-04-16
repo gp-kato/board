@@ -12,8 +12,8 @@ class BbsController extends Controller
     public function index ()
     {
         $bbs_data = message::where('message', 0)
-                            ->orderBy('id', 'desc')
-                            ->get();
+        ->orderBy('id', 'desc')
+        ->get();
         return view ('index', compact('bbs_data'));
     }
 
