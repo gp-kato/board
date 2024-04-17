@@ -21,12 +21,10 @@ Route::post('/bbs_add',[BbsController::class,'add']);
 Route::get('/admin',[BbsController::class,'admin']);
 Route::post('/admin',[BbsController::class,'admin']);
 
-Route::get('/delete',[BbsController::class,'delete']);
-Route::post('/delete',[BbsController::class,'delete']);
+Route::get('/delete/{id}',[BbsController::class,'delete']);
+Route::post('/delete/{id}',[BbsController::class,'delete']);
 
-Route::get('/download',[BbsController::class,'download']);
-
-Route::get('/edit',[BbsController::class,'edit']);
-Route::post('/edit',[BbsController::class,'edit']);
+Route::get('/edit/{id}',[BbsController::class,'edit']);
+Route::post('/edit/{id}',[BbsController::class,'edit']);
 
 Route::get('/csv-download', [CsvDownloadController::class, 'downloadCsv']);
