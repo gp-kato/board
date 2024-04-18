@@ -2,17 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Message;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class CsvDownloadController extends Controller
 {
-    public function downloadCsv($limit = null)
+    public function downloadCsv(Request $request)
     {
 
         // Messageの全データを取得
         $query = Message::query();
+
+        $limit = $request->limit;
 
         // ダウンロード件数の制限がある場合
         if (!is_null($limit)) {

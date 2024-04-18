@@ -45,9 +45,14 @@ class BbsController extends Controller
         return view ('admin', compact('bbs_data'));
     }
 
-    public function delete ()
+    public function delete ($id)
     {
-        return view ('delete');
+        Message::where('id',$id)
+        ->update( [
+            'updated_at' => now()
+        ] );
+
+        return redirect ('admin');
     }
 
     public function download (Request $request)
@@ -55,8 +60,8 @@ class BbsController extends Controller
         return view ('download');
     }
 
-    public function edit ()
+    public function edit ($id)
     {
-        return view ('edit');
+        return redirect ('admin');
     }
 }
