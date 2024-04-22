@@ -47,11 +47,9 @@ class BbsController extends Controller
 
     public function delete ($id)
     {
-        Message::where('id',$id)
-        ->update( [
-            'updated_at' => now()
-        ] );
-
+        $post = Message::find($id);
+        $post->delete();
+    
         return redirect ('admin');
     }
 
@@ -60,8 +58,23 @@ class BbsController extends Controller
         return view ('download');
     }
 
-    public function edit ($id)
+    public function edit ($post_id)
     {
-        return redirect ('admin');
+        $post = Message::findOrFail($post_id);
+        return view ('edit', compact('post'));
+    }
+    
+    public function update(Request $request, $post_id)
+    {
+        $savedata = [
+            'view_name' => $request->view_name,
+            'post_date' => $request->post_date,
+            'message' => $request->message,
+        ];
+    
+        $post = Message::findOrFail($post_id);
+        $post->fill($savedata)->save();
+    
+        return redirect('admin');
     }
 }

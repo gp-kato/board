@@ -32,8 +32,6 @@ if( empty($_SESSION['admin_login']) || $_SESSION['admin_login'] !== true ) {
 try {
 
     $option = array(
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::MYSQL_ATTR_MULTI_STATEMENTS => false
     );
 
 } catch(PDOException $e) {
@@ -427,6 +425,7 @@ article.reply::before {
     </ul>
 @endif
 <form method="post">
+    @csrf
 	<div>
 		<label for="view_name">表示名</label>
 		<input id="view_name" type="text" name="view_name" value="<?php if( !empty($message_data['view_name']) ){ echo $message_data['view_name']; } elseif( !empty($view_name) ){ echo htmlspecialchars( $view_name, ENT_QUOTES, 'UTF-8'); } ?>">
