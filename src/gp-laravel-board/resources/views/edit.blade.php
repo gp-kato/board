@@ -1,121 +1,10 @@
 <?php
 
-// データベースの接続情報
-define( 'DB_HOST', 'localhost');
-define( 'DB_USER', 'root');
-define( 'DB_PASS', 'password');
-define( 'DB_NAME', 'board');
-
-// タイムゾーン設定
-date_default_timezone_set('Asia/Tokyo');
-
 // 変数の初期化
-$view_name = null;
-$message = array();
-$message_data = null;
 $error_message = array();
 $stmt = null;
 $res = null;
 $option = null;
-
-session_start();
-
-// 管理者としてログインしているか確認
-if( empty($_SESSION['admin_login']) || $_SESSION['admin_login'] !== true ) {
-
-	// ログインページへリダイレクト
-	header("Location: admin");
-	exit;
-}
-
-// データベースに接続
-try {
-
-    $option = array(
-    );
-
-} catch(PDOException $e) {
-
-    // 接続エラーのときエラー内容を取得する
-    $error_message[] = $e->getMessage();
-}
-
-if( !empty($_GET['message_id']) && empty($_POST['message_id']) ) {
-
-	// SQL作成
-	$stmt = $pdo->prepare("SELECT * FROM message WHERE id = :id");
-
-	// 値をセット
-	$stmt->bindValue( ':id', $_GET['message_id'], PDO::PARAM_INT);
-
-	// SQLクエリの実行
-	$stmt->execute();
-
-	// 表示するデータを取得
-	$message_data = $stmt->fetch();
-
-	// 投稿データが取得できないときは管理ページに戻る
-	if( empty($message_data) ) {
-		header("Location: admin");
-		exit;
-	}
-
-} elseif( !empty($_POST['message_id']) ) {
-
-	// 空白除去
-	$view_name = preg_replace( '/\A[\p{C}\p{Z}]++|[\p{C}\p{Z}]++\z/u', '', $_POST['view_name']);
-	$message = preg_replace( '/\A[\p{C}\p{Z}]++|[\p{C}\p{Z}]++\z/u', '', $_POST['message']);
-
-	// 表示名の入力チェック
-	if( empty($view_name) ) {
-		$error_message[] = '表示名を入力してください。';
-	}
-
-	// メッセージの入力チェック
-	if( empty($message) ) {
-		$error_message[] = 'メッセージを入力してください。';
-	} else {
-
-        // 文字数を確認
-        if( 100 < mb_strlen($message, 'UTF-8') ) {
-			$error_message[] = 'ひと言メッセージは100文字以内で入力してください。';
-		}
-    }
-
-	if( empty($error_message) ) {
-
-		try {
-
-			// SQL作成
-			$stmt = $pdo->prepare("UPDATE message SET view_name = :view_name, message= :message WHERE id = :id");
-
-			// 値をセット
-			$stmt->bindParam( ':view_name', $view_name, PDO::PARAM_STR);
-			$stmt->bindParam( ':message', $message, PDO::PARAM_STR);
-			$stmt->bindValue( ':id', $_POST['message_id'], PDO::PARAM_INT);
-
-			// SQLクエリの実行
-			$stmt->execute();
-
-			// コミット
-			$res = $pdo->commit();
-
-		} catch(Exception $e) {
-
-			// エラーが発生した時はロールバック
-			$pdo->rollBack();
-		}
-
-		// 更新に成功したら一覧に戻る
-		if( $res ) {
-			header("Location: admin");
-			exit;
-		}
-	}
-}
-
-// データベースの接続を閉じる
-$stmt = null;
 
 ?>
 <!DOCTYPE html>
@@ -428,13 +317,13 @@ article.reply::before {
     @csrf
 	<div>
 		<label for="view_name">表示名</label>
-		<input id="view_name" type="text" name="view_name" value="<?php if( !empty($message_data['view_name']) ){ echo $message_data['view_name']; } elseif( !empty($view_name) ){ echo htmlspecialchars( $view_name, ENT_QUOTES, 'UTF-8'); } ?>">
+        <input id="view_name" type="text" name="view_name" value="{{ old('view_name', $post->view_name) }}">
 	</div>
 	<div>
 		<label for="message">ひと言メッセージ</label>
-		<textarea id="message" name="message"><?php if( !empty($message_data['message']) ){ echo $message_data['message']; } elseif( !empty($message) ){ echo htmlspecialchars( $message, ENT_QUOTES, 'UTF-8'); } ?></textarea>
+        <textarea id="message" name="message">{{ old('message', $post->message) }}</textarea>
 	</div>
-	<a class="btn_cancel" href="admin">キャンセル</a>
+    <a class="btn_cancel" href="{{ url('/admin') }}">キャンセル</a>
 	<input type="submit" name="btn_submit" value="更新">
 	<input type="hidden" name="message_id" value="<?php if( !empty($message_data['id']) ){ echo $message_data['id']; } 
     elseif( !empty($_POST['message_id']) ){ echo htmlspecialchars( $_POST['message_id'], ENT_QUOTES, 'UTF-8'); } ?>">

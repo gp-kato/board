@@ -73,8 +73,8 @@ class BbsController extends Controller
         ];
     
         $post = Message::findOrFail($post_id);
-        $post->fill($savedata)->save();
-    
+        $post->fill($request->all())->save();
+        
         return redirect('admin');
     }
 }

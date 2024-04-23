@@ -19,6 +19,7 @@ Route::get('/',[BbsController::class,'index']);
 Route::post('/bbs_add',[BbsController::class,'add']);
 
 Route::get('/admin',[BbsController::class,'admin']);
+Route::post('/admin',[BbsController::class,'admin']);
 
 Route::get('/delete/{id}',[BbsController::class,'delete']);
 Route::post('/delete/{id}',[BbsController::class,'delete']);
