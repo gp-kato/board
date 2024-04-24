@@ -25,3 +25,5 @@ Route::get('/edit/{id}',[BbsController::class,'edit']);
 Route::post('/edit/{id}',[BbsController::class,'update']);
 
 Route::get('/csv-download', [CsvDownloadController::class, 'downloadCsv']);
+
+Route::get('/delete/{id}',[BbsController::class,'delete']);
