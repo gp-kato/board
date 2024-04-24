@@ -3,64 +3,17 @@
 // 管理ページのログインパスワード
 define( 'PASSWORD', 'adminPassword');
 
-// データベースの接続情報
-define( 'DB_HOST', 'localhost');
-define( 'DB_USER', 'root');
-define( 'DB_PASS', 'password');
-define( 'DB_NAME', 'board');
-
-// タイムゾーン設定
-date_default_timezone_set('Asia/Tokyo');
+if( !empty($_POST['admin_password']) && $_POST['admin_password'] === PASSWORD ) {
+    $_SESSION['admin_login'] = true;
+} else {
+    $error_message[] = 'ログインに失敗しました。';
+}
 
 // 変数の初期化
-$current_date = null;
-$message = array();
-$message_array = array();
 $success_message = null;
-$error_message = array();
-$pdo = null;
 $stmt = null;
 $res = null;
 $option = null;
-
-session_start();
-
-if( !empty($_GET['btn_logout']) ) {
-	unset($_SESSION['admin_login']);
-}
-
-// データベースに接続
-try {
-
-	$option = array(
-		PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-		PDO::MYSQL_ATTR_MULTI_STATEMENTS => false
-	);
-
-} catch(PDOException $e) {
-
-	// 接続エラーのときエラー内容を取得する
-	$error_message[] = $e->getMessage();
-}
-
-if( !empty($_POST['btn_submit']) ) {
-
-	if( !empty($_POST['admin_password']) && $_POST['admin_password'] === PASSWORD ) {
-		$_SESSION['admin_login'] = true;
-	} else {
-		$error_message[] = 'ログインに失敗しました。';
-	}
-}
-
-if( !empty($pdo) ) {
-
-    // メッセージのデータを取得する
-    $sql = "SELECT * FROM message ORDER BY post_date DESC";
-    $message_array = $pdo->query($sql);
-}
-
-// データベースの接続を閉じる
-$pdo = null;
 
 ?>
 <!DOCTYPE html>

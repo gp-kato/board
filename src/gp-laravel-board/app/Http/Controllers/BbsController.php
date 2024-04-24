@@ -66,11 +66,6 @@ class BbsController extends Controller
     
     public function update(Request $request, $post_id)
     {
-        $savedata = [
-            'view_name' => $request->view_name,
-            'post_date' => $request->post_date,
-            'message' => $request->message,
-        ];
     
         $post = Message::findOrFail($post_id);
         $post->fill($request->all())->save();
