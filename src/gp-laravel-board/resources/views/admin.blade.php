@@ -15,12 +15,6 @@ if( !empty($_POST['btn_submit']) ) {
 	}
 }
 
-if( !empty($_POST['admin_password']) && $_POST['admin_password'] === PASSWORD ) {
-    $_SESSION['admin_login'] = true;
-} else {
-    $error_message[] = 'ログインに失敗しました。';
-}
-
 // 変数の初期化
 $success_message = null;
 $stmt = null;
