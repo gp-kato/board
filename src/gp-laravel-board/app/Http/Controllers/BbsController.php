@@ -45,10 +45,9 @@ class BbsController extends Controller
         return view ('admin', compact('bbs_data'));
     }
 
-    public function delete ($id)
+    public function delete (Message $message)
     {
-        $post = Message::find($id);
-        $post->delete();
+        $message->delete();
     
         return redirect ('admin');
     }
@@ -58,17 +57,14 @@ class BbsController extends Controller
         return view ('download');
     }
 
-    public function edit ($post_id)
+    public function edit (Message $message)
     {
-        $post = Message::findOrFail($post_id);
-        return view ('edit', compact('post'));
+        return view ('edit', compact('message'));
     }
     
-    public function update(Request $request, $post_id)
+    public function update(Request $request, Message $message)
     {
-    
-        $post = Message::findOrFail($post_id);
-        $post->fill($request->all())->save();
+        $message->fill($request->all())->save();
         
         return redirect('admin');
     }
