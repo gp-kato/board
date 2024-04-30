@@ -21,9 +21,9 @@ Route::post('/bbs_add',[BbsController::class,'add']);
 Route::get('/admin',[BbsController::class,'admin']);
 Route::post('/admin',[BbsController::class,'admin']);
 
-Route::get('/edit/{id}',[BbsController::class,'edit']);
-Route::post('/edit/{id}',[BbsController::class,'update']);
+Route::get('/edit/{message}',[BbsController::class,'edit']);
+Route::post('/edit/{message}',[BbsController::class,'update']);
 
 Route::get('/csv-download', [CsvDownloadController::class, 'downloadCsv']);
 
-Route::get('/delete/{id}',[BbsController::class,'delete']);
+Route::get('/delete/{message}',[BbsController::class,'delete']);

@@ -27,7 +27,7 @@ $option = null;
         @csrf
 	        <div>
 		        <label for="view_name">表示名</label>
-                <input id="view_name" type="text" name="view_name" value="{{ old('view_name', $post->view_name) }}">
+                <input id="view_name" type="text" name="view_name" value="{{ old('view_name', $message->view_name) }}">
 	        </div>
 	        <div>
 		        <label for="message">ひと言メッセージ</label>
