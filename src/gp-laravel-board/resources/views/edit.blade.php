@@ -31,7 +31,7 @@ $option = null;
 	        </div>
 	        <div>
 		        <label for="message">ひと言メッセージ</label>
-                <textarea id="message" name="message">{{ old('message', $post->message) }}</textarea>
+                <textarea id="message" name="message">{{ old('message', $message->message) }}</textarea>
 	        </div>
             <a class="btn_cancel" href="{{ url('/admin') }}">キャンセル</a>
 	        <input type="submit" name="btn_submit" value="更新">
