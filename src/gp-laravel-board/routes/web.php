@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BbsController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\CsvDownloadController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,12 +19,15 @@ use Illuminate\Support\Facades\Route;
 Route::get('/',[BbsController::class,'index']);
 Route::post('/bbs_add',[BbsController::class,'add']);
 
-Route::get('/admin',[BbsController::class,'admin']);
-Route::post('/admin',[BbsController::class,'admin']);
+Route::get('/login',[LoginController::class,'login']);
 
-Route::get('/edit/{message}',[BbsController::class,'edit']);
-Route::post('/edit/{message}',[BbsController::class,'update']);
+Route::group(['middleware' => 'auth'], function() {
+    Route::post('/admin',[BbsController::class,'admin']);
 
-Route::get('/csv-download', [CsvDownloadController::class, 'downloadCsv']);
+    Route::get('/edit/{message}',[BbsController::class,'edit']);
+    Route::post('/edit/{message}',[BbsController::class,'update']);
 
-Route::get('/delete/{message}',[BbsController::class,'delete']);
+    Route::get('/csv-download', [CsvDownloadController::class, 'downloadCsv']);
+
+    Route::get('/delete/{message}',[BbsController::class,'delete']);
+});
