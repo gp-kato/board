@@ -6,7 +6,7 @@
 
 @section('content')
     <section>
-        @if ( !empty($_SESSION['admin_login']) && $_SESSION['admin_login'] === true )
+        @if ( !empty(session('admin_login')) && session('admin_login') === true )
             <form method="get" action="csv-download">
                 @csrf
                 <select name="limit">
