@@ -19,6 +19,11 @@ class BbsController extends Controller
 
     public function add(Request $request)
     {
+        $request->validate([
+            'view_name' => 'required|max:10',
+            'message' => 'required|max:40',
+        ]);
+
         // リクエストからデータを取得
         $view_name = $request->view_name;
         $message = $request->message;
