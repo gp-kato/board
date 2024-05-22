@@ -3,35 +3,24 @@
 namespace App\Http\Controllers;
 
 use App\Models\Message;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Mail\Events\MessageSent;
 
 class BbsController extends Controller
 {
-    public function index ()
+    public function index()
     {
-        $bbs_data = message::where('message', 0)
-        ->orderBy('id', 'desc')
-        ->get();
-        return view ('index', compact('bbs_data'));
+        $bbs_data = $this->getMessages();
+        return view('index', compact('bbs_data'));
     }
 
     public function add(Request $request)
     {
-        $request->validate([
-            'view_name' => 'required|max:10',
-            'message' => 'required|max:40',
-        ]);
+        $this->validateRequest($request);
 
-        // リクエストからデータを取得
-        $view_name = $request->view_name;
-        $message = $request->message;
-    
         // データを配列に格納
         $data = [
-            'view_name' => $view_name,
-            'message' => $message,
+            'view_name' => $request->view_name,
+            'message' => $request->message,
             'post_date' => now()  // 現在の日付と時間を設定
         ];
     
@@ -42,40 +31,52 @@ class BbsController extends Controller
         return redirect('/');
     }
 
-    public function admin ()
+    public function admin()
     {
-        $bbs_data = message::where('message', 0)
-        ->orderBy('id', 'desc')
-        ->get();
-        return view ('admin', compact('bbs_data'));
+        $bbs_data = $this->getMessages();
+        return view('admin', compact('bbs_data'));
     }
 
-    public function delete (Message $message)
+    public function delete(Message $message)
     {
         $message->delete();
-    
-        return redirect ('admin');
+        return redirect('admin');
     }
 
-    public function download (Request $request)
+    public function edit(Message $message)
     {
-        return view ('download');
-    }
-
-    public function edit (Message $message)
-    {
-        return view ('edit', compact('message'));
+        return view('edit', compact('message'));
     }
     
     public function update(Request $request, Message $message)
+    {
+        $this->validateRequest($request);
+
+        // データを配列に格納
+        $data = [
+            'view_name' => $request->view_name,
+            'message' => $request->message,
+            'post_date' => now()  // 現在の日付と時間を設定
+        ];
+
+        // 既存のメッセージを更新
+        $message->update($data);
+    
+        return redirect('admin');
+    }
+
+    private function getMessages()
+    {
+        return Message::where('message', 0)
+            ->orderBy('id', 'desc')
+            ->get();
+    }
+
+    private function validateRequest(Request $request)
     {
         $request->validate([
             'view_name' => 'required|max:10',
             'message' => 'required|max:40',
         ]);
-
-        $message->fill($request->all())->save();
-        
-        return redirect('admin');
     }
 }

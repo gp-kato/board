@@ -9,5 +9,5 @@ class Message extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['view_name', 'message'];
+    protected $fillable = ['view_name', 'message', 'post_date'];
 }
