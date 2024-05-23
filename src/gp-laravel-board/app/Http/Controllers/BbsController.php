@@ -15,18 +15,12 @@ class BbsController extends Controller
 
     public function add(Request $request)
     {
-        $this->validateRequest($request);
+        $request = $this->validateRequest($request);
 
-        // データを配列に格納
-        $data = [
-            'view_name' => $request->view_name,
-            'message' => $request->message,
-            'post_date' => now()  // 現在の日付と時間を設定
-        ];
-    
         // データベースに挿入
-        Message::insert($data);
-    
+        $request['post_date'] = now();
+        Message::create($request);
+
         // リダイレクト
         return redirect('/');
     }
@@ -47,36 +41,21 @@ class BbsController extends Controller
     {
         return view('edit', compact('message'));
     }
-    
-    public function update(Request $request, Message $message)
+
+    private function validateRequest(Request $request)
     {
-        $this->validateRequest($request);
+        $request = $this->validateRequest($request);
 
-        // データを配列に格納
-        $data = [
-            'view_name' => $request->view_name,
-            'message' => $request->message,
-            'post_date' => now()  // 現在の日付と時間を設定
-        ];
+        return $request->validate([
+            'view_name' => 'required|max:10',
+            'message' => 'required|max:40',
+        ]);
 
-        // 既存のメッセージを更新
-        $message->update($data);
-    
-        return redirect('admin');
+        $request['post_date'] = now();
     }
 
     private function getMessages()
     {
-        return Message::where('message', 0)
-            ->orderBy('id', 'desc')
-            ->get();
-    }
-
-    private function validateRequest(Request $request)
-    {
-        $request->validate([
-            'view_name' => 'required|max:10',
-            'message' => 'required|max:40',
-        ]);
+        return Message::orderBy('id', 'desc')->get();
     }
 }
