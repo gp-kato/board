@@ -42,6 +42,10 @@ class BbsController extends Controller
         return view('edit', compact('message'));
     }
 
+    public function update(Request $request, Message $message){
+        return redirect('admin');
+    }
+    
     private function validateRequest(Request $request)
     {
         $request = $this->validateRequest($request);
@@ -50,8 +54,6 @@ class BbsController extends Controller
             'view_name' => 'required|max:10',
             'message' => 'required|max:40',
         ]);
-
-        $request['post_date'] = now();
     }
 
     private function getMessages()

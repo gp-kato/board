@@ -6,7 +6,7 @@
 
 @section('content')
     <section>
-        <form method="get" action="csv-download">
+        <form method="get" action="{{ route('download') }}">
             @csrf
             <select name="limit">
                 <option value="">全て</option>
@@ -34,7 +34,7 @@
                 </div>
             @endforeach
         </div>
-        <form method="post" action="logout">
+        <form method="post" action="{{ route('logout',) }}">
             @csrf
             <input type="submit" name="btn_logout" value="ログアウト">
         </form>

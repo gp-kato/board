@@ -5,7 +5,7 @@
 @section('header', 'ひと言掲示板 管理ページ（投稿の編集）')
 
 @section('content')
-    <form method="post" action="/update">
+    <form method="post" action="{{ route('update', ['message' => $message->id]) }}">
 		@csrf
 		<div>
 			<label for="view_name">表示名</label>
