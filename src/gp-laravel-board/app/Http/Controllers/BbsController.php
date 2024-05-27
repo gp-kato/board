@@ -43,13 +43,13 @@ class BbsController extends Controller
     }
 
     public function update(Request $request, Message $message){
-        return redirect('admin');
+        $message->fill($request->all())->save();        
+        
+        return view ('edit', compact('message'));
     }
     
     private function validateRequest(Request $request)
     {
-        $request = $this->validateRequest($request);
-
         return $request->validate([
             'view_name' => 'required|max:10',
             'message' => 'required|max:40',
