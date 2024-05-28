@@ -5,7 +5,7 @@
 @section('header', 'ひと言掲示板')
 
 @section('content')
-    <form method="post" action="bbs_add">
+    <form method="post" action="{{ route('add') }}">
         @csrf
 	    <div>
 		    <label for="view_name">表示名</label>

@@ -3,7 +3,6 @@
 use App\Http\Controllers\BbsController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\CsvDownloadController;
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,27 +16,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/',[BbsController::class,'index']);
-Route::post('/bbs_add',[BbsController::class,'add']);
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/',[BbsController::class,'index'])->name('index');
+Route::post('/bbs_add',[BbsController::class,'add'])->name('add');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/admin',[BbsController::class,'admin']);
-    Route::post('/admin',[BbsController::class,'admin']);
+    Route::get('/admin',[BbsController::class,'admin'])->name('admin');
 
-    Route::get('/edit/{message}',[BbsController::class,'edit']);
-    Route::post('/edit/{message}',[BbsController::class,'update']);
+    Route::get('/edit/{message}',[BbsController::class,'edit'])->name('edit');
+    Route::post('/update/{message}',[BbsController::class,'update'])->name('update');
 
-    Route::get('/csv-download', [CsvDownloadController::class, 'downloadCsv']);
+    Route::get('/csv-download', [CsvDownloadController::class, 'downloadCsv'])->name('download');
 
-    Route::get('/delete/{message}',[BbsController::class,'delete']);
+    Route::get('/delete/{message}',[BbsController::class,'delete'])->name('delete');
 });
 
 require __DIR__.'/auth.php';
