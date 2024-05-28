@@ -37,15 +37,19 @@ class BbsController extends Controller
         return redirect('admin');
     }
 
-    public function edit(Message $message)
+    public function edit(Request $request, Message $message)
     {
+        $request = $this->validateRequest($request);
+        $message->fill($request)->save();
+
         return view('edit', compact('message'));
     }
 
-    public function update(Request $request, Message $message){
+    public function update(Request $request, Message $message)
+    {
         $message->fill($request->all())->save();        
         
-        return view ('edit', compact('message'));
+        return redirect('admin');
     }
     
     private function validateRequest(Request $request)
